@@ -1,0 +1,21 @@
+# 固定移除文件
+node_modules
+.DS_Store
+
+# 所有日志文件
+*.log
+
+# 所有本地文件
+.env
+*.local
+
+# 打包临时文件
+dist
+
+# 编辑器配置文件
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
