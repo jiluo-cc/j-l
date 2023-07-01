@@ -85,12 +85,8 @@ export class Client {
         }
       };
 
-      try {
-        // 发送请求
-        xhr.send((endOptions.payload as XMLHttpRequestBodyInit) ?? null);
-      } catch (error) {
-        console.log(33333333333);
-      }
+      // 发送请求
+      xhr.send((endOptions.payload as XMLHttpRequestBodyInit) ?? null);
     });
   }
 
