@@ -3,6 +3,7 @@ import {
   appendURLSearchParams,
   composeOptions,
   getHeaders,
+  handleJSONOptions,
   joinURLFragment,
 } from "./utils";
 
@@ -35,6 +36,8 @@ export class Client {
           compoundedOptions
         );
       }
+
+      handleJSONOptions(endOptions);
 
       const xhr = new XMLHttpRequest();
 

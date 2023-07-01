@@ -107,3 +107,15 @@ export const getHeaders = (headerString: string) => {
   });
   return headers;
 };
+
+export const handleJSONOptions = (options: ITS.RequestOptions) => {
+  if (options.contentType === "json") {
+    if (typeof options.payload === "object") {
+      options.payload = JSON.stringify(options.payload);
+    }
+    if (!Object.keys(options.headers).some((i) => /^content-type$/i.test(i))) {
+      options.headers["Content-Type"] = "application/json";
+    }
+  }
+  return options;
+};
