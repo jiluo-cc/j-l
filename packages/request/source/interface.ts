@@ -40,6 +40,7 @@ export type RequestOptions = {
   timeout: ConfigOptions["timeout"];
   contentType: ConfigOptions["contentType"];
   responseType: ConfigOptions["responseType"];
+  signal?: AbortSignal;
 };
 
 export type ResponseType = XMLHttpRequestResponseType;

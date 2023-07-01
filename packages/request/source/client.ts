@@ -47,6 +47,10 @@ export class Client {
       xhr.ontimeout = reject;
       xhr.onprogress = endOptions.onProgress ?? null;
 
+      if (options.signal) {
+        options.signal.addEventListener("abort", xhr.abort);
+      }
+
       const url = joinURLFragment(endOptions.base!, endOptions.url);
 
       appendURLSearchParams(url.searchParams, endOptions.search);

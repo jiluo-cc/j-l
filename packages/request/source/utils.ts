@@ -22,6 +22,7 @@ export const composeOptions = (
     timeout: right.timeout ?? left.timeout,
     contentType: right.contentType ?? left.contentType,
     responseType: right.responseType ?? left.responseType ?? "",
+    signal: right.signal || left.signal,
   };
   if (rest.length) {
     return composeOptions(options, ...rest);
