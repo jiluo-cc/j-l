@@ -45,10 +45,15 @@ export class Client {
       xhr.onabort = reject;
       xhr.onerror = reject;
       xhr.ontimeout = reject;
-      xhr.onprogress = endOptions.onProgress ?? null;
+      xhr.onprogress = endOptions.onDownloadProgress ?? null;
 
       if (options.signal) {
-        options.signal.addEventListener("abort", xhr.abort);
+        const { signal } = options;
+        const onAbort = () => {
+          signal.removeEventListener("abort", onAbort);
+          xhr.abort();
+        };
+        signal.addEventListener("abort", onAbort);
       }
 
       const url = joinURLFragment(endOptions.base!, endOptions.url);
@@ -68,6 +73,12 @@ export class Client {
       xhr.responseType = endOptions.responseType;
       xhr.withCredentials = endOptions.withCredentials || false;
       xhr.timeout = endOptions.timeout || 0;
+      if (endOptions.overrideMime) {
+        xhr.overrideMimeType(endOptions.overrideMime);
+      }
+      if (endOptions.onUploadProgress) {
+        xhr.upload.onprogress = endOptions.onUploadProgress;
+      }
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === xhr.DONE) {
@@ -76,7 +87,7 @@ export class Client {
             headers: getHeaders(xhr.getAllResponseHeaders()),
             body: xhr.response,
             options: endOptions,
-            xhr,
+            // xhr,
           };
           if (xhr.status < 100) {
             reject(response);

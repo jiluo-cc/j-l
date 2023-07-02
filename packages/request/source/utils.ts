@@ -16,13 +16,15 @@ export const composeOptions = (
       ...right.headers,
     },
     payload: right.payload ?? left.payload ?? null,
-    onProgress: right.onProgress ?? left.onProgress,
     base: right.base ?? left.base ?? "",
     withCredentials: right.withCredentials ?? left.withCredentials,
     timeout: right.timeout ?? left.timeout,
     contentType: right.contentType ?? left.contentType,
     responseType: right.responseType ?? left.responseType ?? "",
     signal: right.signal || left.signal,
+    onUploadProgress: right.onUploadProgress || left.onUploadProgress,
+    onDownloadProgress: right.onDownloadProgress || left.onDownloadProgress,
+    overrideMime: right.overrideMime || left.overrideMime,
   };
   if (rest.length) {
     return composeOptions(options, ...rest);
@@ -80,20 +82,20 @@ export const appendURLSearchParams = (
 export const joinURLFragment = (baseURL: string, appendURL: string) => {
   const { protocol, origin } = location;
   const regular = /^https?:\/\/.+/i;
-  let urlString: string;
+  let URLString: string;
 
   if (regular.test(appendURL)) {
-    urlString = appendURL;
+    URLString = appendURL;
   } else if (appendURL.startsWith("//")) {
-    urlString = protocol + appendURL;
+    URLString = protocol + appendURL;
   } else if (regular.test(baseURL)) {
-    urlString = baseURL + appendURL;
+    URLString = baseURL + appendURL;
   } else if (baseURL.startsWith("//")) {
-    urlString = protocol + baseURL + appendURL;
+    URLString = protocol + baseURL + appendURL;
   } else {
-    urlString = origin + baseURL + appendURL;
+    URLString = origin + baseURL + appendURL;
   }
-  return new URL(urlString);
+  return new URL(URLString);
 };
 
 export const getHeaders = (headerString: string) => {
