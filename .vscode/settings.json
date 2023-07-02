@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["jsdelivr", "tsup"],
+  "cSpell.words": ["iife", "jsdelivr", "tsup"],
   "json.schemas": [
     {
       "url": "https://cdn.jsdelivr.net/npm/tsup/schema.json",
