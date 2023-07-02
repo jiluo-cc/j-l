@@ -87,8 +87,6 @@ export class Client {
           try {
             const { onResponse } = this.#config;
 
-            console.log(333, onResponse);
-
             resolve((onResponse ? onResponse(response) : response) as Response);
           } catch (error) {
             response.error = error;
