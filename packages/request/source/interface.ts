@@ -12,6 +12,24 @@ export type RequestMethod =
 
 export type RequestSearch = Record<string | number, unknown>;
 
+export type ClientConfig = {
+  /**
+   * 基础 URL
+   */
+  base?: string;
+  withCredentials?: boolean;
+  timeout?: number;
+  headers: Record<string, string>;
+  contentType?: "json" | "text";
+  responseType?: XMLHttpRequestResponseType;
+  onBeforeRequest?(
+    options: RequestOptions
+  ): RequestOptions | Promise<RequestOptions>;
+  onResponse?(response: Response): unknown;
+  // HTTP Basic Auth
+  // auth?: { username?: string; pasword?: string };
+};
+
 export type ConfigOptions = {
   /**
    * 基础 URL

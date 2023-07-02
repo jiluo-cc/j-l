@@ -1,36 +1,46 @@
 import type * as ITS from "./interface";
 
-export const composeOptions = (
-  ...args: Partial<ITS.RequestOptions>[]
-): ITS.RequestOptions => {
-  const [left, right, ...rest] = args;
-  const options: ITS.RequestOptions = {
+export const mergeConfig = (
+  left: Partial<ITS.ClientConfig>,
+  right: Partial<ITS.ClientConfig>,
+  isOmitConfigOnlyFields = false
+): ITS.ClientConfig => ({
+  base: (right.base ?? left.base) || "",
+  withCredentials: right.withCredentials ?? left.withCredentials ?? false,
+  timeout: (right.timeout ?? left.timeout) || 0,
+  headers: {
+    ...right.headers,
+    ...left.headers,
+  },
+  contentType: right.contentType || left.contentType,
+  responseType: (right.responseType ?? left.responseType) || "",
+  ...(isOmitConfigOnlyFields
+    ? {}
+    : {
+        // 这俩是 config 里面独有的
+        onBeforeRequest: right.onBeforeRequest || left.onBeforeRequest,
+        onResponse: right.onResponse || left.onResponse,
+      }),
+});
+
+export const mergeRequestOptions = (
+  left: Partial<ITS.RequestOptions>,
+  right: Partial<ITS.RequestOptions>
+): ITS.RequestOptions =>
+  ({
+    ...mergeConfig(left, right, true),
     method: right.method ?? left.method ?? "GET",
     url: right.url ?? left.url ?? "",
     search: {
       ...left.search,
       ...right.search,
     },
-    headers: {
-      ...left.headers,
-      ...right.headers,
-    },
     payload: right.payload ?? left.payload ?? null,
-    base: right.base ?? left.base ?? "",
-    withCredentials: right.withCredentials ?? left.withCredentials,
-    timeout: right.timeout ?? left.timeout,
-    contentType: right.contentType ?? left.contentType,
-    responseType: right.responseType ?? left.responseType ?? "",
     signal: right.signal || left.signal,
     onUploadProgress: right.onUploadProgress || left.onUploadProgress,
     onDownloadProgress: right.onDownloadProgress || left.onDownloadProgress,
     overrideMime: right.overrideMime || left.overrideMime,
-  };
-  if (rest.length) {
-    return composeOptions(options, ...rest);
-  }
-  return options;
-};
+  } as ITS.RequestOptions);
 
 const transformSearch = (
   search: unknown,

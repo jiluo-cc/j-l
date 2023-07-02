@@ -1,40 +1,33 @@
 import type * as ITS from "./interface";
 import {
   appendURLSearchParams,
-  composeOptions,
   getHeaders,
   handleJSONOptions,
   joinURLFragment,
+  mergeConfig,
+  mergeRequestOptions,
 } from "./utils";
 
 export class Client {
-  #configOptions: Partial<ITS.ConfigOptions> = {
-    base: "",
-    headers: {},
-    withCredentials: false,
-    timeout: 0,
-    responseType: "",
-  };
+  #config: Partial<ITS.ConfigOptions> = {};
 
   /**
    * 客户端 HTTP 请求库
    */
-  constructor(options?: Partial<ITS.ConfigOptions>) {
-    if (options) {
-      this.config(options);
+  constructor(config?: Partial<ITS.ConfigOptions>) {
+    if (config) {
+      this.config(config);
     }
   }
 
   #request<Response = unknown>(options: Partial<ITS.RequestOptions>) {
     return new Promise<Response>(async (resolve, reject) => {
       // 构建请求配置
-      const compoundedOptions = composeOptions(this.#configOptions, options);
+      const compoundedOptions = mergeRequestOptions(this.#config, options);
 
       let endOptions = compoundedOptions;
-      if (this.#configOptions.onBeforeRequest) {
-        endOptions = await this.#configOptions.onBeforeRequest?.(
-          compoundedOptions
-        );
+      if (this.#config.onBeforeRequest) {
+        endOptions = await this.#config.onBeforeRequest?.(compoundedOptions);
       }
 
       handleJSONOptions(endOptions);
@@ -87,13 +80,14 @@ export class Client {
             headers: getHeaders(xhr.getAllResponseHeaders()),
             body: xhr.response,
             options: endOptions,
-            // xhr,
           };
           if (xhr.status < 100) {
             reject(response);
           }
           try {
-            const { onResponse } = this.#configOptions;
+            const { onResponse } = this.#config;
+
+            console.log(333, onResponse);
 
             resolve((onResponse ? onResponse(response) : response) as Response);
           } catch (error) {
@@ -111,11 +105,8 @@ export class Client {
   /**
    * 配置
    */
-  config(options: Partial<ITS.ConfigOptions>) {
-    this.#configOptions = composeOptions(
-      this.#configOptions,
-      options
-    ) as Partial<ITS.ConfigOptions>;
+  config(config: Partial<ITS.ConfigOptions>) {
+    this.#config = mergeConfig(this.#config, config);
   }
 
   /**
