@@ -1,4 +1,4 @@
-import type * as ITS from "./interface";
+import type * as LI from "./interface";
 import {
   appendURLSearchParams,
   getHeaders,
@@ -9,19 +9,18 @@ import {
 } from "./utils";
 
 export class Client {
-  #config: Partial<ITS.ConfigOptions> = {};
+  #config: LI.ClientConfig = {};
 
   /**
    * 客户端 HTTP 请求库
+   * @param config 客户端配置项
    */
-  constructor(config?: Partial<ITS.ConfigOptions>) {
-    if (config) {
-      this.config(config);
-    }
+  constructor(config?: LI.ClientConfig) {
+    this.config(config);
   }
 
-  #request<Response = unknown>(options: Partial<ITS.RequestOptions>) {
-    return new Promise<Response>(async (resolve, reject) => {
+  #request<UserResponse = unknown>(options: Partial<LI.RequestOptions>) {
+    return new Promise<UserResponse>(async (resolve, reject) => {
       // 构建请求配置
       const compoundedOptions = mergeRequestOptions(this.#config, options);
 
@@ -75,7 +74,7 @@ export class Client {
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === xhr.DONE) {
-          const response: ITS.Response = {
+          const response: LI.Response = {
             status: xhr.status,
             headers: getHeaders(xhr.getAllResponseHeaders()),
             body: xhr.response,
@@ -87,7 +86,9 @@ export class Client {
           try {
             const { onResponse } = this.#config;
 
-            resolve((onResponse ? onResponse(response) : response) as Response);
+            resolve(
+              (onResponse ? onResponse(response) : response) as UserResponse
+            );
           } catch (error) {
             response.error = error;
             reject(response);
@@ -101,33 +102,42 @@ export class Client {
   }
 
   /**
-   * 配置
+   * 配置请求客户端
+   * @param config 客户端配置项
    */
-  config(config: Partial<ITS.ConfigOptions>) {
-    this.#config = mergeConfig(this.#config, config);
+  config(config?: LI.ClientConfig) {
+    if (config) {
+      this.#config = mergeConfig(this.#config, config);
+    }
   }
 
   /**
-   * PUT 增加
+   * PUT 增加，添加，创建，保存操作
+   * @param url 请求路径
+   * @param payload 请求负载
+   * @param options 请求额外配置
    */
   put<Response = unknown, Payload = unknown>(
     url: string,
     payload?: Payload,
-    options?: Partial<Omit<ITS.RequestOptions, "method" | "url" | "payload">>
+    options?: Partial<Omit<LI.RequestOptions, "method" | "url" | "payload">>
   ) {
     return this.#request<Response>({ ...options, method: "PUT", url, payload });
   }
 
   /**
    * DELETE 删除，不建议删除使用使用请求体（Body），删除的参数默认放在查询参数中
+   * @param url 请求路径
+   * @param search 请求查询参数
+   * @param options 请求额外配置
    */
   delete<
     Response = unknown,
-    Search extends ITS.RequestSearch = ITS.RequestSearch
+    Search extends LI.RequestSearch = LI.RequestSearch
   >(
     url: string,
     search?: Search,
-    options?: Partial<Omit<ITS.RequestOptions, "method" | "url" | "search">>
+    options?: Partial<Omit<LI.RequestOptions, "method" | "url" | "search">>
   ) {
     return this.#request<Response>({
       ...options,
@@ -138,12 +148,15 @@ export class Client {
   }
 
   /**
-   * PATCH 更新
+   * PATCH 更新，编辑
+   * @param url 请求路径
+   * @param payload 请求负载
+   * @param options 请求额外配置
    */
   patch<Response = unknown, Payload = unknown>(
     url: string,
     payload?: Payload,
-    options?: Partial<Omit<ITS.RequestOptions, "method" | "url" | "payload">>
+    options?: Partial<Omit<LI.RequestOptions, "method" | "url" | "payload">>
   ) {
     return this.#request<Response>({
       ...options,
@@ -159,11 +172,11 @@ export class Client {
    * @param search 请求查询参数
    * @param options 请求额外配置
    */
-  get<Response = unknown, Search extends ITS.RequestSearch = ITS.RequestSearch>(
+  get<Response = unknown, Search extends LI.RequestSearch = LI.RequestSearch>(
     url: string,
     search?: Search,
     options?: Partial<
-      Omit<ITS.RequestOptions, "method" | "url" | "search" | "payload">
+      Omit<LI.RequestOptions, "method" | "url" | "search" | "payload">
     >
   ) {
     return this.#request<Response>({ ...options, method: "GET", url, search });
@@ -171,11 +184,14 @@ export class Client {
 
   /**
    * POST 传递其它信息
+   * @param url 请求路径
+   * @param payload 请求负载
+   * @param options 请求额外配置
    */
   post<Response = unknown, Payload = unknown>(
     url: string,
     payload?: Payload,
-    options?: Partial<Omit<ITS.RequestOptions, "method" | "url" | "payload">>
+    options?: Partial<Omit<LI.RequestOptions, "method" | "url" | "payload">>
   ) {
     return this.#request<Response>({
       ...options,
@@ -187,21 +203,37 @@ export class Client {
 
   /**
    * HEAD 查询头部信息
+   * @param url 请求路径
+   * @param search 请求查询参数
+   * @param options 请求额外配置
    */
-  head(
+  head<Response = unknown, Search extends LI.RequestSearch = LI.RequestSearch>(
     url: string,
-    options?: Partial<Omit<ITS.RequestOptions, "method" | "url" | "payload">>
+    search?: Search,
+    options?: Partial<Omit<LI.RequestOptions, "method" | "url" | "payload">>
   ) {
-    return this.#request({ ...options, method: "HEAD", url });
+    return this.#request<Response>({ ...options, method: "HEAD", url, search });
   }
 
   /**
    * OPTIONS 请求配置
+   * @param url 请求路径
+   * @param search 请求查询参数
+   * @param options 请求额外配置
    */
-  options(
+  options<
+    Response = unknown,
+    Search extends LI.RequestSearch = LI.RequestSearch
+  >(
     url: string,
-    options?: Partial<Omit<ITS.RequestOptions, "method" | "url" | "payload">>
+    search?: Search,
+    options?: Partial<Omit<LI.RequestOptions, "method" | "url" | "payload">>
   ) {
-    return this.#request({ ...options, method: "OPTIONS", url });
+    return this.#request<Response>({
+      ...options,
+      method: "OPTIONS",
+      url,
+      search,
+    });
   }
 }
