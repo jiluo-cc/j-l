@@ -25,6 +25,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     }
   },
@@ -40,6 +41,10 @@
     "clean": true,
     "dts": true,
     "minify": true,
+    "format": [
+      "esm",
+      "cjs"
+    ],
     "platform": "node"
   },
   "publishConfig": {
