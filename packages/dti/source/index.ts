@@ -1,3 +1,5 @@
+export { version as VERSION } from "../package.json";
+
 declare namespace DTI {
   /**
    * 分页查询批注，即：分页查询的条件

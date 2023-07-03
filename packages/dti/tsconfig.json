@@ -1,8 +1,11 @@
 {
-  "include": ["source"],
+  "include": ["source", "./package.json"],
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "target": "ESNext",
+    "moduleResolution": "NodeNext"
   }
 }
