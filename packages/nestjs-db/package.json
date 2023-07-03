@@ -1,0 +1,39 @@
+{
+  "name": "@j.l/nestjs-db",
+  "version": "1.0.0-alpha.2",
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup source",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@prisma/client": "^4.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.1.0",
+    "@nestjs/common": "^10.0.4",
+    "@prisma/client": "^4.16.2",
+    "prisma": "^4.16.2",
+    "tsup": "^7.1.0"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "tsup": {
+    "entry": [
+      "source"
+    ],
+    "splitting": false,
+    "sourcemap": false,
+    "clean": true,
+    "dts": true,
+    "minify": true,
+    "platform": "node"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}
