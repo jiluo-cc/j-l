@@ -156,7 +156,7 @@ export const getHeaders = (headerString: string) => {
  */
 export const handleJSONOptions = (options: LI.RequestOptions) => {
   if (options.contentType === "json") {
-    if (typeof options.payload === "object") {
+    if (options.payload && typeof options.payload === "object") {
       options.payload = JSON.stringify(options.payload);
     }
     if (!Object.keys(options.headers).some((i) => /^content-type$/i.test(i))) {
