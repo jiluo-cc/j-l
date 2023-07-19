@@ -20,6 +20,8 @@ importers:
 
   packages/dti: {}
 
+  packages/error: {}
+
   packages/nestjs-db:
     devDependencies:
       '@nestjs/cli':
