@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@j-l/prettier-config':
-        specifier: ^1.0.1
-        version: 1.0.1(prettier@3.0.0)
+        specifier: ^1.0.2
+        version: 1.0.2(prettier@3.0.0)
       tsup:
         specifier: ^7.1.0
         version: 7.1.0(typescript@5.1.6)
@@ -349,8 +349,8 @@ packages:
     dev: true
     optional: true
 
-  /@j-l/prettier-config@1.0.1(prettier@3.0.0):
-    resolution: {integrity: sha512-zTM+0cG/4fAcZ80TzN/bV8U4R2NqsTZ4FsiLKwKE978axeSPs2B5mKhM7ue99qGiUebyppSH53ynIlyLX417jA==}
+  /@j-l/prettier-config@1.0.2(prettier@3.0.0):
+    resolution: {integrity: sha512-CvlMcnb4P84tbqibrbA/6sF6X1tMHuzGKLzP6bPO5d4DxKsgRparaxnQkUWVGy0A0cobBV4q5LkaWvRu7IK3JA==}
     peerDependencies:
       prettier: '>= 3.0.0'
     dependencies:
