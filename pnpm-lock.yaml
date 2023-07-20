@@ -35,6 +35,12 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0(typescript@5.1.6)
 
+  packages/prettier-config:
+    dependencies:
+      prettier:
+        specifier: '>= 3.0.0'
+        version: 3.0.0
+
   packages/request: {}
 
 packages:
@@ -1828,6 +1834,12 @@ packages:
       lilconfig: 2.1.0
       yaml: 2.3.1
     dev: true
+
+  /prettier@3.0.0:
+    resolution: {integrity: sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: false
 
   /prisma@4.16.2:
     resolution: {integrity: sha512-SYCsBvDf0/7XSJyf2cHTLjLeTLVXYfqp7pG5eEVafFLeT0u/hLFz/9W196nDRGUOo1JfPatAEb+uEnTQImQC1g==}
