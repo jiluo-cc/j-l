@@ -2,6 +2,7 @@
   "scripts": {},
   "private": true,
   "devDependencies": {
+    "@j-l/prettier-config": "^1.0.1",
     "tsup": "^7.1.0",
     "typescript": "^5.1.6"
   },

@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@j-l/prettier-config':
+        specifier: ^1.0.1
+        version: 1.0.1(prettier@3.0.0)
       tsup:
         specifier: ^7.1.0
         version: 7.1.0(typescript@5.1.6)
@@ -345,6 +348,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@j-l/prettier-config@1.0.1(prettier@3.0.0):
+    resolution: {integrity: sha512-zTM+0cG/4fAcZ80TzN/bV8U4R2NqsTZ4FsiLKwKE978axeSPs2B5mKhM7ue99qGiUebyppSH53ynIlyLX417jA==}
+    peerDependencies:
+      prettier: '>= 3.0.0'
+    dependencies:
+      prettier: 3.0.0
+    dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
@@ -1839,7 +1850,6 @@ packages:
     resolution: {integrity: sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: false
 
   /prisma@4.16.2:
     resolution: {integrity: sha512-SYCsBvDf0/7XSJyf2cHTLjLeTLVXYfqp7pG5eEVafFLeT0u/hLFz/9W196nDRGUOo1JfPatAEb+uEnTQImQC1g==}
