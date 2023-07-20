@@ -1,6 +1,6 @@
 {
   "name": "@j-l/prettier-config",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0",
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
@@ -14,27 +14,18 @@
   ],
   "description": "Prettier 配置",
   "main": "dist/index.cjs",
-  "type": "module",
-  "module": "dist/index.js",
   "author": {
     "name": "章生",
     "email": "me@jiluo.cc",
     "url": "https://www.jiluo.cc"
   },
   "publishConfig": {
-    "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "tsup": {
-    "entry": [
-      "source/index.ts"
-    ],
-    "splitting": false,
+    "entry": ["source/index.ts"],
     "clean": true,
     "minify": true,
-    "format": [
-      "esm",
-      "cjs"
-    ]
+    "format": "cjs"
   }
 }
